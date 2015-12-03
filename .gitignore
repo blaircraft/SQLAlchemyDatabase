@@ -1,3 +1,4 @@
 *.sqlite
+*.ropeproject
 *.DS_Store
 *.pyc
