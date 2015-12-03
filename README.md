@@ -75,7 +75,7 @@ def main(src, dst, tables):
 	Migrate tables from src database to dst.
 	'''
 
-	src['db'] = Database.new(uri=dst)
+	src['db'] = Database.new(uri=src)
 	src['session'] = src_db.Session()
 
 	dst['db'] = Database.new(uri=dst, reinitialize=True)
