@@ -32,10 +32,11 @@ db = Database.new(uri='sqlite:///database.sqlite')
 ## A More Complicated Example 
 
 ```python
+import click
 from sqlalchemy import Column, Integer, String
-from sqlalchemydatabase import SQLiteDatabase
+from sqlalchemydatabase import Database
 
-class User(SQLiteDatabase.Base):
+class User(Database.Base):
 	__tablename__ == 'users'
 
 	id = Column(Integer, primary_key=True)
@@ -50,14 +51,43 @@ class User(SQLiteDatabase.Base):
 	def __repr__(self):
 		return '{}:{}:{}'.format(self.id, self.name, self.password)
 
+	def copy(self):
+		'''
+		Create a copy of the User, stripping association with a particular
+		SQLAlchemy session.
+		'''
+		return User(self.id, self.name, self.password)
 
-database = SQLiteDatabase(uri='sqlite:///database.sqlite')
-session = database.Session()
 
-session.add(User(0, 'root', 'passw0rd'))
-session.add(User(1, 'me', 'badpassword'))
-session.commit()
-users = session.query(User).all()
-for user in users:
-	print user
+@click.command()
+@click.argument(
+	'src'
+)
+@click.argument(
+	'dst'
+)
+@click.argument(
+	'tables',
+	nargs=-1
+)
+def main(src, dst, tables):
+	'''
+	Migrate tables from src database to dst.
+	'''
+
+	src['db'] = Database.new(uri=dst)
+	src['session'] = src_db.Session()
+
+	dst['db'] = Database.new(uri=dst, reinitialize=True)
+	dst['session'] = dst_db.Session()
+
+	for table in tables:
+		records = src['session'].query(table).all()
+		for record in records:
+			dst['session'].add(record.copy())
+		dst['session'].commit()
+
+
+if __name__ == "__main__":
+	main()
 ```
