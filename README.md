@@ -2,10 +2,10 @@
 
 ## Introduction
 
-SQLAlchemyDatabase abstracts and simplified the parts of SQLAlchemy that are
+SQLAlchemyDatabase abstracts and simplifies the parts of SQLAlchemy that are
 required for every database connection (binding the engine, creating a Session
-object). It also abstracts connections to different database types (currently
-SQLite and PostgreSQL) to simplify the startup process.
+object, etc.). It also abstracts connections to different database types
+(currently SQLite and PostgreSQL) to simplify the startup process.
 
 ## Sample Usage
 
