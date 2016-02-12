@@ -2,3 +2,4 @@
 *.ropeproject
 *.DS_Store
 *.pyc
+*egg-info

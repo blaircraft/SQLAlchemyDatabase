@@ -88,6 +88,8 @@ class Database(object):
         """
         if uri.startswith('postgresql+psycopg2://'):
             return PostgreSQLDatabase(uri=uri, reinitialize=reinitialize, echo=echo)
+        if uri.startswith('postgresql://'):
+            return PostgreSQLDatabase(uri=uri, reinitialize=reinitialize, echo=echo)
         elif uri.startswith('sqlite://'):
             return SQLiteDatabase(uri=uri, reinitialize=reinitialize, echo=echo)
         else:
